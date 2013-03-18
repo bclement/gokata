@@ -1,0 +1,4 @@
+gokata
+======
+
+Go Kata
