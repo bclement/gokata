@@ -1,5 +1,9 @@
 package chop
 
+/*
+Binary search that finds index of x in arr.
+Returns -1 if x is not n arr
+*/
 func Chop(x int, arr []int) int{
     rval := -1
     size := len(arr)
@@ -14,7 +18,7 @@ func Chop(x int, arr []int) int{
             if ret == -1{
                 return ret
             }else{
-                return ret + mid
+                return ret + mid + 1
             }
         case diff < 0:
             return Chop(x, arr[:mid])
