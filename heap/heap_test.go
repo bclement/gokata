@@ -21,3 +21,24 @@ func TestHeap(t *testing.T){
     }
 }
 
+type Reverse struct{
+   IntStorage
+}
+
+func (r *Reverse) Less(i, j int) bool{
+    return r.IntStorage.Less(j, i)
+}
+
+func TestReverse(t *testing.T){
+    v := Reverse{IntStorage{make([]int, 0, 10)}}
+    h := &Heap{&v, 2}
+    h.Push(2)
+    h.Push(3)
+    h.Push(1)
+    for last,_ := h.Pop().(int); h.Len() > 0;{
+        next,_ := h.Pop().(int)
+        if next < last{
+            t.Errorf("not reversed")
+        }
+    }
+}
