@@ -14,9 +14,10 @@ func TestHeap(t *testing.T){
         }
         for last,_ := h.Pop().(int); h.Len() > 0;{
             next,_ := h.Pop().(int)
-            if next > last{
+            if next < last{
                 t.Errorf("not sorted")
             }
+            last = next
         }
     }
 }
@@ -37,8 +38,9 @@ func TestReverse(t *testing.T){
     h.Push(1)
     for last,_ := h.Pop().(int); h.Len() > 0;{
         next,_ := h.Pop().(int)
-        if next < last{
+        if next > last{
             t.Errorf("not reversed")
         }
+        last = next
     }
 }

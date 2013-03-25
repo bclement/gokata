@@ -46,7 +46,7 @@ func (h *Heap) percUp(){
     child := h.Len()-1
     for child > 0{
         parent := h.getParent(child)
-        if h.v.Less(child, parent){
+        if !h.v.Less(child, parent){
             return
         }
         h.v.Swap(parent, child)
