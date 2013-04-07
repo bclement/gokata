@@ -1,5 +1,9 @@
 package bloom
 
+import "os"
+import "io"
+import "strings"
+import "bufio"
 import "testing"
 
 func makeHash(i uint32) func(string) uint32 {
@@ -30,6 +34,48 @@ func TestFilter(t *testing.T) {
     assert(t, f.Contains("bar"), "contains bar")
     assert(t, !f.Contains("baz"), "not baz")
     assert(t, !f.Contains("qux"), "not qux")
+}
+
+func TestGerman(t *testing.T) {
+    f := New(512)
+    load(t, f, "words.txt")
+    file, err := os.Open("german.txt")
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+	defer file.Close()
+    reader := bufio.NewReader(file)
+    for {
+        line, err := reader.ReadString('\n')
+        if err != nil {
+            if err != io.EOF {
+                t.Errorf("%s", err)
+            }
+            break;
+        }
+        if f.Contains(strings.TrimSpace(line)) {
+            t.Errorf("got %s", line)
+        }
+    }
+}
+
+func load(t *testing.T, f *Filter, path string) {
+	file, err := os.Open(path)
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+	defer file.Close()
+    reader := bufio.NewReader(file)
+    for {
+        line, err := reader.ReadString('\n')
+        if err != nil {
+            if err != io.EOF {
+                t.Errorf("%s", err)
+            }
+            break;
+        }
+        f.Add(strings.TrimSpace(line))
+    }
 }
 
 func assert(t *testing.T, result bool, msg string) {
